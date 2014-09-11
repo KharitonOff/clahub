@@ -1,0 +1,20 @@
+// models
+var User = require('mongoose').model('User');
+// services
+var github = require('../services/github');
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Github Pull Request Webhook Handler
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+module.exports = function(req, res) {
+
+  if(req.args.action === 'opened') {
+
+  }
+
+  if(req.args.action === 'synchronize') {
+
+  }
+
+};
