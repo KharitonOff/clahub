@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var UserSchema = mongoose.Schema({
     uuid: Number,
-    repos: Array,
+    requests: Array,
     token: String
 });
 

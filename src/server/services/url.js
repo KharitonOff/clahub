@@ -44,6 +44,9 @@ module.exports = function() {
         },
         reviewPullRequest: function(user, repo, number) {
             return url.resolve(baseUrl, '/' + user + '/' + repo + '/pull/' + number);
+        },
+        claURL: function(user,repoID) {
+            return url.resolve(baseUrl, '/' + user + '/' + repoID);
         }
     };
 }();

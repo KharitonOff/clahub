@@ -9,12 +9,12 @@ var router = express.Router();
 router.all('/*', function(req, res) {
 
     if (req.isAuthenticated()) {
-        return res.sendfile('home.html', {root: __dirname + './../../client'});
+        return res.sendFile('home.html', {root: __dirname + './../../client'});
     }
 
     req.session.next = req.url;
 
-    return res.sendfile('login.html', {root: __dirname + './../../client'});
+    return res.sendFile('login.html', {root: __dirname + './../../client'});
 
 });
 

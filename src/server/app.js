@@ -33,6 +33,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // custom middleware
+app.use('/api', require('./middleware/param'));
+app.use('/github', require('./middleware/param'));
 app.use('/api', require('./middleware/authenticated'));
 
 async.series([
@@ -213,7 +215,8 @@ app.all('/api/:obj/:fun', function(req, res) {
     res.set('Content-Type', 'application/json');
     api[req.params.obj][req.params.fun](req, function(err, obj) {
         if(err) {
-            return res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));
+            return res.status(err.code > 0 ? err.code : 500).send(JSON.stringify(err.text || err));
+            // return res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));
         }
         obj ? res.send(JSON.stringify(obj)) : res.send();
     });
@@ -225,6 +228,7 @@ app.all('/api/:obj/:fun', function(req, res) {
 
 app.all('/github/webhook/:id', function(req, res) {
     var event = req.headers['x-github-event'];
+    console.log('event ', event);
     try {
         if (!webhooks[event]) {
             return res.send(400, 'Unsupported event');
