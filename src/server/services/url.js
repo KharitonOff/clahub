@@ -47,6 +47,9 @@ module.exports = function() {
         },
         claURL: function(user,repoID) {
             return url.resolve(baseUrl, '/' + user + '/' + repoID);
+        },
+        githubPullRequest: function(owner, repo, number){
+            return url.resolve(githubBase, '/' + owner + '/' + repo + '/pull/' + number);
         }
     };
 }();

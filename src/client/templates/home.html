@@ -15,7 +15,7 @@
 
 		<table class="table table-hover">
 			<tr ng-repeat="request in pullRequests"
-          ui-sref="repo.cla({ user:user.value.name, repoId:request.base.repo.id})"
+          ui-sref="repo.cla({ user:request.base.owner.login, repoId:request.base.repo.id})"
           class="select">
 
 				<td><span class="octicon octicon-repo-forked"></span>&nbsp; {{ request.head.repo.name }}</td>

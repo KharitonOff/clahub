@@ -3,8 +3,10 @@ var User = require('mongoose').model('User');
 var CLA = require('mongoose').model('CLA');
 // services
 var github = require('../services/github');
-//api
-var cla = require('../api/cla');
+var pullRequest = require('../services/pullRequest');
+var status = require('../services/status');
+var cla = require('../services/cla');
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Github Pull Request Webhook Handler
@@ -14,43 +16,75 @@ module.exports = function(req, res) {
 	var pull_request = req.args.pull_request;
 
 	if(req.args.action === 'opened') {
-		User.remove();
+		var args = {
+			user: pull_request.user.id,
+			owner: req.args.repository.owner.login,
+			repo: req.args.repository.name,
+			repo_uuid: req.args.repository.id,
+			sha: req.args.pull_request.head.sha,
+			number: req.args.number
+		};
+
+		status.update(args);
+
+		// var notification_args = {
+		// 	user: req.args.repository.owner.login,
+		// 	repo: req.args.repository.name,
+		// 	number: req.args.number,
+		// 	sender: req.args.sender,
+		// 	url: url.reviewPullRequest(req.args.repository.owner.login, req.args.repository.name, req.args.number)
+		// };
+
+		// notification.sendmail(
+		//         'pull_request_opened',
+		//         req.args.repository.owner.login,
+		//         req.args.repository.name,
+		//         req.args.repository.id,
+		//         user.token,
+		//         req.args.number,
+		//         notification_args
+		// );
+
+		pullRequest.badgeComment(
+			req.args.repository.owner.login,
+			req.args.repository.name,
+			req.args.repository.id,
+			req.args.number
+		);
+
+
 		User.findOne({ uuid: pull_request.user.id }, function(err, user) {
 			if (err) {
 				console.log(err);
 				return;
 			}
 
-			if(user) {
-				user.requests.push({
-					id:pull_request.id,
-					url:pull_request.url,
-					sha:pull_request.head.sha,
-					repo:pull_request.base.repo
-				});
-			} else {
-				user = new User({
-					uuid: pull_request.user.id,
-					requests:[{
-						id:pull_request.id,
-						url:pull_request.url,
-						sha:pull_request.head.sha,
-						repo:pull_request.base.repo
-					}]
-				});
-			}
+			cla.check({repo: args.repo_uuid, user: args.user}, function(err, signed){
+				if (!signed && !err) {
 
-			user.save(function (error) {
-				if (!error) {
-					cla.updateStatus({
-						args:{
-							user: pull_request.user.id,
-							repo: pull_request.base.repo,
-							sha: pull_request.head.sha
-						}},null);
+					if(user) {
+						user.requests.push({
+							id:pull_request.id,
+							url:pull_request.url,
+							number: req.args.number,
+							sha:pull_request.head.sha,
+							repo:pull_request.base.repo
+						});
+					} else {
+						user = new User({
+							uuid: pull_request.user.id,
+							requests:[{
+								id:pull_request.id,
+								url:pull_request.url,
+								number: req.args.number,
+								sha:pull_request.head.sha,
+								repo:pull_request.base.repo
+							}]
+						});
+					}
+					user.save();
 				}
 			});
-
 		});
 	}
 

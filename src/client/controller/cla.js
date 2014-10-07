@@ -5,8 +5,8 @@
 // path: /:repoId/:prId
 // *****************************************************
 
-module.controller( 'ClaController', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', '$modal',
-    function($rootScope, $scope, $stateParams, $HUB, $RPC, $modal) {
+module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', '$modal',
+    function($window, $rootScope, $scope, $stateParams, $HUB, $RPC, $modal) {
 
         // get the request
         // $scope.request = request;
@@ -25,9 +25,9 @@ module.controller( 'ClaController', ['$rootScope', '$scope', '$stateParams', '$H
         getCLA();
 
         $scope.agree = function(){
-            $RPC.call('cla', 'sign', {repo: $stateParams.repoId}, function(err, data){
-                if (!err) {
-
+            $RPC.call('cla', 'sign', {owner: $stateParams.user, repo: $stateParams.repoId}, function(err, data){
+                if (!err && data.value) {
+                    $window.location.href = data.value;
                 }
             });
         };

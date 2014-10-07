@@ -2,18 +2,13 @@
 var merge = require('merge');
 var path = require('path');
 // models
-var CLA = require('mongoose').model('CLA');
+// var CLA = require('mongoose').model('CLA');
 var User = require('mongoose').model('User');
 //services
 var github = require('../services/github');
 var url = require('../services/url');
-
-var guid = function(){
-	return 'xxxxxxxxxxxxx'.replace(/[x]/g, function(c) {
-		var r = Math.floor(Math.random() * 10);
-		return r.toString();
-	});
-};
+var cla = require('../services/cla');
+var status = require('../services/status');
 
 module.exports = {
 	get: function(req, done){
@@ -35,65 +30,35 @@ module.exports = {
 		var repoId = req.args.repo;
 		var self = this;
 
-		CLA.findOne({repo: repoId, user: req.user.id}, function(err, cla){
-			if (err) {
-				done(err,{});
-				return;
-			}
+		var args = {repo: req.args.repo, user: req.user.id};
 
-			if (!cla) {
-				cla = new CLA({uuid:guid(), repo: repoId, user: req.user.id, created_at:now});
-				cla.save(function(err){
-					if (err) {
-						done(err,{});
-						return;
-					}
-
+		cla.check(args,function(err, signed){
+			if (!err && !signed) {
+				cla.create(args, function(){
 					User.findOne({uuid:req.user.id}, function(err, user){
 						if (!err) {
+							var number;
+							var repo;
+							// to do: remove updated requests
 							user.requests.forEach(function(request){
-								self.updateStatus({args:{
-									user: user.uuid,
-									repo: request.repo,
+								status.update({
+									user: req.user.id,
+									owner: req.args.owner,
+									repo_uuid: request.repo.id,
+									repo: request.repo.name,
 									sha: request.sha
-								}},null);
+								},null);
+								repo = request.repo.name;
+								number = request.number;
 							});
+
+							done(err, url.githubPullRequest(req.args.owner, repo, number));
+						} else {
+							done(err);
 						}
 					});
 				});
 			}
 		});
-    },
-
-    updateStatus: function(req, done){
-    	var status = 'pending';
-		var description = "You haven't sign our CLA yet. Please accept the CLA in order to get your pull request merged.";
-
-		CLA.findOne({repo:req.args.repo.id, user:req.args.user}, function(err, cla){
-			if (err) {
-				console.log(err);
-				return;
-			}
-
-			if (cla) {
-				status = 'success';
-				description = 'CLA is accepted.';
-			}
-			github.call({
-				obj: 'statuses',
-				fun: 'create',
-				arg: {
-					user: req.args.repo.owner.login,
-					repo: req.args.repo.name,
-					sha: req.args.sha,
-					state: status,
-					description: description,
-					target_url: url.claURL('xy', req.args.repo.id)
-					// target_url: url.reviewPullRequest(args.user, args.repo, args.number)
-				},
-				token: 'af70aa0a29261749388e88bcde803400391c9739'
-			}, null);
-		});
-
     }
 };
