@@ -10,26 +10,4 @@
     </div>
   </div>
 
-	<div class="col-md-6">
-    <h2>Repositories</h2>
-
-		<table class="table table-hover">
-			<tr ng-repeat="request in pullRequests"
-          ui-sref="repo.cla({ user:request.base.owner.login, repoId:request.base.repo.id})"
-          class="select">
-
-				<td><span class="octicon octicon-repo-forked"></span>&nbsp; {{ request.head.repo.name }}</td>
-
-				<td style="text-align:right;">
-          <i class="fa fa-times" 
-             ng-click="remove(repo); $event.stopPropagation();" 
-             tooltip-placement="bottom" 
-             tooltip="Remove">
-          </i>
-        </td>
-
-			</tr>
-		</table>
-	</div>
-
 </div>

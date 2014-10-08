@@ -1,6 +1,18 @@
 <div class="row main" style="margin-top: 50px;">
-	This is our CLA, please sign.
-	{{cla.text}}
-    <button class="btn btn-success" ng-click="agree()">I agree</button>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="well" style="margin: 50px;">
+				<h1>Corporate License Agreement</h1>
+					<div style="height: 400px; overflow-y: scroll; border: 1px solid lightgrey; padding: 10px;">
+					<!-- <%- termsHtml %> -->
+					<div ng-bind-html="renderHtml(claText)"></div>
+					</div>
+				</div>
+				<p class="text-center"><a class="btn btn-primary" href="/accept">Accept and continue</a></p>
+    			<button class="btn btn-success" ng-click="agree()">I agree</button>
+			</div>
+		</div>
+	</div>
 	
 </div>

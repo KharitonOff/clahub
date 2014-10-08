@@ -5,6 +5,8 @@
  * @overview Configuration Module
  */
 module.exports = {
+    terms: process.env.TERMS_ID,
+
     server: {
         github: {
             // optional

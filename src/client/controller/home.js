@@ -10,22 +10,22 @@ module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams',
 
         $scope.pullRequests = [];
 
-        $scope.hasRepos = true;
+        // $scope.hasRepos = true;
 
-        $RPC.call('cla', 'getPullRequests', {}, function(err, data) {
-            if(!err) {
+        // $RPC.call('cla', 'getPullRequests', {}, function(err, data) {
+        //     if(!err) {
 
-                $scope.hasRequests = !!data.value.requests.length;
+        //         $scope.hasRequests = !!data.value.requests.length;
 
-                data.value.requests.forEach(function(url) {
-                    $RAW.get(url, function(err, pullRequest) {
-                        if(!err) {
-                            $scope.pullRequests.push(pullRequest);
-                        }
-                    });
-                });
-            }
-        });
+        //         data.value.requests.forEach(function(url) {
+        //             $RAW.get(url, function(err, pullRequest) {
+        //                 if(!err) {
+        //                     $scope.pullRequests.push(pullRequest);
+        //                 }
+        //             });
+        //         });
+        //     }
+        // });
 
         // //
         // // NOTE:

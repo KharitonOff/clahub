@@ -9,7 +9,7 @@ var guid = function(){
 
 module.exports = {
     check: function(args, done) {
-		CLA.findOne({repo:args.repo, user:args.user}, function(err, cla){
+		CLA.findOne({repo:args.repo, user:args.user, href:config.terms}, function(err, cla){
             done(err, !!cla);
         });
     },

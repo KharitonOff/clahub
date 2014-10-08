@@ -5,11 +5,9 @@
 // path: /:repoId/:prId
 // *****************************************************
 
-module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', '$modal',
-    function($window, $rootScope, $scope, $stateParams, $HUB, $RPC, $modal) {
+module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', '$modal', '$sce',
+    function($window, $rootScope, $scope, $stateParams, $HUB, $RPC, $modal, $sce) {
 
-        // get the request
-        // $scope.request = request;
         $scope.cla = {text: 'dummy text'};
 
         function getCLA () {
@@ -17,7 +15,7 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
                 repo: $stateParams.repoId
             }, function(err, cla) {
                 if(!err) {
-					$scope.cla.text = cla.value.cla.text;
+                    $scope.claText = cla.value.raw;
                 }
             });
         }
@@ -30,6 +28,11 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
                     $window.location.href = data.value;
                 }
             });
+        };
+
+        $scope.renderHtml = function(html_code)
+        {
+            return $sce.trustAsHtml(html_code);
         };
     }
 ]);

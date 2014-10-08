@@ -1,9 +1,12 @@
 // module
 var merge = require('merge');
 var path = require('path');
+var fs = require('fs');
+var request = require('request');
+
 // models
-// var CLA = require('mongoose').model('CLA');
 var User = require('mongoose').model('User');
+
 //services
 var github = require('../services/github');
 var url = require('../services/url');
@@ -12,25 +15,36 @@ var status = require('../services/status');
 
 module.exports = {
 	get: function(req, done){
-		done(null, {cla: {text:'text from server'}});
-	},
-
-    getPullRequests: function(req, done) {
-		User.findOne({ uuid: req.user.id }, function(err, user) {
-			if(user) {
-				done(err, { requests: user.requests});
-				return;
-			}
-			done(err, {});
+		github.call({
+			obj: 'gists',
+			fun: 'get',
+			arg: {
+				id: 'bf4bdf6497d0c93f168c'
+			},
+			token: config.server.github.token
+		}, function(err, res){
+			github.call({
+				obj: 'markdown',
+				fun: 'render',
+				arg: {
+					text: res.files.legal.content
+				},
+				token: config.server.github.token
+			}, function(err, result) {
+				if (result.statusCode !== 200 && err){
+					done(err);
+				}
+				done(null, {raw:result.data});
+			});
 		});
-    },
+	},
 
     sign: function(req, done) {
 		var now = new Date();
 		var repoId = req.args.repo;
 		var self = this;
 
-		var args = {repo: req.args.repo, user: req.user.id};
+		var args = {repo: req.args.repo, user: req.user.id, href:config.terms};
 
 		cla.check(args,function(err, signed){
 			if (!err && !signed) {
@@ -39,7 +53,7 @@ module.exports = {
 						if (!err) {
 							var number;
 							var repo;
-							// to do: remove updated requests
+
 							user.requests.forEach(function(request){
 								status.update({
 									user: req.user.id,
@@ -51,6 +65,8 @@ module.exports = {
 								repo = request.repo.name;
 								number = request.number;
 							});
+
+							user.requests.length = 0;
 
 							done(err, url.githubPullRequest(req.args.owner, repo, number));
 						} else {

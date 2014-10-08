@@ -33,6 +33,15 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             })
 
             //
+            // (abstract)
+            //
+            .state('cla', {
+                abstract: true,
+                url: '/accept',
+                template: '<section ui-view></section>'
+            })
+
+            //
             // Repo state (abstract)
             //
             .state('repo', {
