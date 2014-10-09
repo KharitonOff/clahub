@@ -35,7 +35,7 @@ app.use(passport.session());
 // custom middleware
 app.use('/api', require('./middleware/param'));
 app.use('/github', require('./middleware/param'));
-app.use('/api', require('./middleware/authenticated'));
+app.use('/accept', require('./middleware/param'));
 
 async.series([
 
@@ -210,6 +210,18 @@ async.series([
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Handle api calls
 //////////////////////////////////////////////////////////////////////////////////////////////////
+app.all('/api/cla/get', function(req, res) {
+    res.set('Content-Type', 'application/json');
+    api['cla']['get'](req, function(err, obj) {
+        if(err) {
+            return res.status(err.code > 0 ? err.code : 500).send(JSON.stringify(err.text || err));
+            // return res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));
+        }
+        obj ? res.send(JSON.stringify(obj)) : res.send();
+    });
+});
+
+app.use('/api', require('./middleware/authenticated'));
 
 app.all('/api/:obj/:fun', function(req, res) {
     res.set('Content-Type', 'application/json');

@@ -33,12 +33,12 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             })
 
             //
-            // (abstract)
+            // Accepted CLA
             //
             .state('cla', {
-                abstract: true,
-                url: '/accept',
-                template: '<section ui-view></section>'
+                // abstract: true,
+                url: '/accept/:owner/:repoId',
+                templateUrl: '/templates/cla.html'
             })
 
             //

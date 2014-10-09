@@ -16,7 +16,7 @@ module.exports = {
     create: function(args, done){
 		var now = new Date();
 
-		var cla = new CLA({uuid:guid(), repo: args.repo, user: args.user, created_at:now});
+		var cla = new CLA({uuid:guid(), repo: args.repo, user: args.user, href:config.terms, created_at:now});
 		cla.save(done);
     }
 };

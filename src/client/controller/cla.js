@@ -5,8 +5,8 @@
 // path: /:repoId/:prId
 // *****************************************************
 
-module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', '$modal', '$sce',
-    function($window, $rootScope, $scope, $stateParams, $HUB, $RPC, $modal, $sce) {
+module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateParams', '$RAW', '$RPC', '$modal', '$sce',
+    function($window, $rootScope, $scope, $stateParams, $RAW, $RPC, $modal, $sce) {
 
         $scope.cla = {text: 'dummy text'};
 
@@ -23,9 +23,14 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
         getCLA();
 
         $scope.agree = function(){
-            $RPC.call('cla', 'sign', {owner: $stateParams.user, repo: $stateParams.repoId}, function(err, data){
-                if (!err && data.value) {
-                    $window.location.href = data.value;
+            // $RAW.post('/accept', {owner: $stateParams.user, repo: $stateParams.repoId}, function(err, data){
+            //     if (!err && data) {
+            //         $window.location.href = data;
+            //     }
+            // });
+            $RAW.get('/accept/' + $stateParams.user + '/' + $stateParams.repoId, function(err, data){
+                if (!err && data) {
+                    $window.location.href = data;
                 }
             });
         };

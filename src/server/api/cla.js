@@ -67,6 +67,7 @@ module.exports = {
 							});
 
 							user.requests.length = 0;
+							user.save();
 
 							done(err, url.githubPullRequest(req.args.owner, repo, number));
 						} else {
