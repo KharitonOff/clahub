@@ -2,11 +2,11 @@ var url = require('url');
 
 module.exports = function() {
 
-    var localSocket = url.format({
-        protocol: 'http',
-        hostname: 'localhost',
-        port: config.server.localport
-    });
+    // var localSocket = url.format({
+    //     protocol: 'http',
+    //     hostname: 'localhost',
+    //     port: config.server.localport
+    // });
 
     var baseUrl = url.format({
         protocol: config.server.http.protocol,
@@ -25,7 +25,7 @@ module.exports = function() {
     });
 
     return {
-        socket: localSocket,
+        // socket: localSocket,
         baseUrl: baseUrl,
         webhook: function(id) {
             return url.resolve(baseUrl, '/github/webhook/' + id);

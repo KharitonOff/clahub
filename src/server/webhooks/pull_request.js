@@ -45,13 +45,6 @@ module.exports = function(req, res) {
 		//         notification_args
 		// );
 
-		pullRequest.badgeComment(
-			req.args.repository.owner.login,
-			req.args.repository.name,
-			req.args.repository.id,
-			req.args.number
-		);
-
 
 		User.findOne({ uuid: pull_request.user.id }, function(err, user) {
 			if (err) {
@@ -83,6 +76,13 @@ module.exports = function(req, res) {
 						});
 					}
 					user.save();
+
+					pullRequest.badgeComment(
+						req.args.repository.owner.login,
+						req.args.repository.name,
+						req.args.repository.id,
+						req.args.number
+					);
 				}
 			});
 		});

@@ -77,5 +77,9 @@ module.exports = {
 				});
 			}
 		});
+    },
+
+    remove: function(req, done) {
+		cla.remove(req.args, done);
     }
 };

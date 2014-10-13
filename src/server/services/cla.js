@@ -18,5 +18,9 @@ module.exports = {
 
 		var cla = new CLA({uuid:guid(), repo: args.repo, user: args.user, href:config.terms, created_at:now});
 		cla.save(done);
+    },
+    remove: function(args, done){
+		CLA.remove({repo:24456091}).exec();
+		done('all done');
     }
 };
