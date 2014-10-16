@@ -43,20 +43,20 @@ module.factory('$RAW', ['$http',
             },
             get: function(url, callback) {
                 return $http.get(url).
-                    success(function(data){
-                        callback(null, data);
+                    success(function(data, status){
+                        callback(null, data, status);
                     })
-                    .error(function(err){
-                        callback(err, null);
+                    .error(function(err, status){
+                        callback(err, null, status);
                     });
             },
             post: function(url, d, callback) {
                 return $http.post(url, d).
-                    success(function(data){
-                        callback(null, data);
+                    success(function(data, status){
+                        callback(null, data, status);
                     })
-                    .error(function(err){
-                        callback(err, null);
+                    .error(function(err, status){
+                        callback(err, null, status);
                     });
             }
         };

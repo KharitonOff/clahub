@@ -23,7 +23,8 @@ module.exports = {
                     sha: args.sha,
                     state: status,
                     description: description,
-                    target_url: url.claURL(args.owner, args.repo_uuid)
+                    target_url: url.claURL(args.owner, args.repo_uuid),
+                    context: 'licence/clahub'
                 },
                 token: config.server.github.token
             }, null);

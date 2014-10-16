@@ -1,7 +1,7 @@
 <div class="row main" style="margin-top: 50px;">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-6 col-md-offset-3" ng-show="!signed">
 				<div class="well" style="margin: 50px;">
 				<h1>Corporate License Agreement</h1>
 					<div style="height: 400px; overflow-y: scroll; border: 1px solid lightgrey; padding: 10px;">
@@ -13,6 +13,10 @@
 					<!-- <a class="btn btn-primary" href="/accept/{{owner}}/{{repoId}}">Accept and continue</a> -->
     				<button class="btn btn-success" ng-click="agree()">I agree</button>
 				</p>
+			</div>
+			<div class="col-md-6 col-md-offset-3" ng-show="signed">
+				<h1 class="center">Thank you for your contribution!</h1>
+				<a href="{{redirect}}" class="btn btn-primary" ng-show="!!redirect">Proceed on GitHub</a>
 			</div>
 		</div>
 	</div>

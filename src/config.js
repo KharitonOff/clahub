@@ -23,7 +23,7 @@ module.exports = {
             token: process.env.GITHUB_TOKEN,
 
             // review.ninja specific
-            scopes: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org', 'write:org']
+            scopes: ['user:email']
         },
 
         localport: process.env.PORT || 5000,

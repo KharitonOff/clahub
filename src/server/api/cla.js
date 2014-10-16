@@ -75,8 +75,15 @@ module.exports = {
 						}
 					});
 				});
+			} else if (signed) {
+				done(null, url.githubBase);
 			}
 		});
+    },
+
+    check: function(req, done){
+		var args = {repo: req.args.repo, user: req.user.id, href:config.terms};
+		cla.check(args, done);
     },
 
     remove: function(req, done) {

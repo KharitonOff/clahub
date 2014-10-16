@@ -20,19 +20,10 @@
   <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
         <a class="navbar-brand" href="/" style="padding-top:13px;"><img src="/assets/images/logo.png"></a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right" ng-show="user.loaded">
-          <li><a href="">FEATURES</a></li>
-          <li><a href="">DOCUMENTATION</a></li>
-          <li><a href="">CONTACT</a></li>
           <li>&nbsp;&nbsp;</li>
           <li class="dropdown">
             <a href="" class="dropdown-toggle" data-toggle="dropdown">
@@ -46,25 +37,6 @@
       </div>
     </div>
   </div>
-
-  <!-- the webhook notification -->
-<!--   <div class="container-fluid">
-    <div class="row" ng-show="hook.loaded && !hook.value && repo.permissions.admin" ng-cloak>
-      <div class="col-md-12 alert alert-warning" style="margin:0;">
-        <strong>Warning!</strong> A webhook is missing for this repository. 
-        <i class="fa fa-lg fa-spinner fa-spin pull-right" ng-show="creating.loading"></i>
-        <button type="button" class="btn btn-default btn-xs pull-right" ng-click="createWebhook()" ng-show="!creating.loading">Add Webhook</button>
-      </div>
-    </div>
-    <div class="row" ng-show="created" ng-cloak>
-      <div class="col-md-12 alert alert-success" style="margin:0;">
-        <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-        </button>
-        <strong>Success!</strong> The webhook was created successfully.
-      </div>
-    </div>
-  </div> -->
 
   <div class="container-fluid">
     <div class="row">
@@ -89,9 +61,9 @@
   <script src="/api.js"></script>
 
   <!-- SERVICES -->
-  <script src="/services/socket.js"></script>
+<!--   <script src="/services/socket.js"></script>
   <script src="/services/Issue.js"></script>
-  <script src="/services/Pull.js"></script>
+  <script src="/services/Pull.js"></script> -->
 
   <!-- CONTROLLERS -->
   <script src="/controller/root.js"></script>

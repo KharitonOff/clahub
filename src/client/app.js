@@ -36,10 +36,15 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             // Accepted CLA
             //
             .state('cla', {
-                // abstract: true,
                 url: '/accept/:owner/:repoId',
-                templateUrl: '/templates/cla.html'
+                templateUrl: '/templates/cla.html',
+                controller: 'ClaController'
             })
+
+            // .state('cla.signed', {
+            //     url: '/accepted/:owner/:repoId',
+            //     templateUrl: '/templates/cla.html'
+            // })
 
             //
             // Repo state (abstract)
