@@ -25,7 +25,6 @@ module.exports = function(req, res) {
 			number: req.args.number
 		};
 
-		status.update(args);
 
 		// var notification_args = {
 		// 	user: req.args.repository.owner.login,
@@ -76,6 +75,8 @@ module.exports = function(req, res) {
 						});
 					}
 					user.save();
+
+					status.update(args);
 
 					pullRequest.badgeComment(
 						req.args.repository.owner.login,

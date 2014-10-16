@@ -3,7 +3,7 @@ var github = require('./github');
 
 module.exports = {
     badgeComment: function(owner, repo, repoId, pullNumber) {
-        // var badgeUrl = url.pullRequestBadge(repoId, pullNumber);
+        var badgeUrl = url.pullRequestBadge(repoId, pullNumber);
         var claUrl = url.claURL(owner, repoId);
 
         github.call({
@@ -13,7 +13,8 @@ module.exports = {
                 user: owner,
                 repo: repo,
                 number: pullNumber,
-                body: 'Please sign our CLA (' + claUrl + ')'
+                // body: 'Please sign our CLA (' + claUrl + ')'
+                body: '[![ReviewNinja](' + badgeUrl + ')](' + claUrl + ')'
             },
             token: config.server.github.token
         }, function(err, res, meta){

@@ -25,7 +25,7 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
             $RPC.call('cla', 'check', {
                 repo: $stateParams.repoId
             }, function(err, signed){
-                if (!err && signed) {
+                if (!err && signed.value) {
                     $scope.signed = true;
                 }
             });
@@ -38,24 +38,6 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
 
         $scope.agree = function(){
             $window.location.href = '/accept/' + $stateParams.user + '/' + $stateParams.repoId;
-            // $RAW.post('/accept', {owner: $stateParams.user, repo: $stateParams.repoId}, function(err, data, status){
-            //     if (status === 401) {
-            //         $window.location.href = '/login';
-            //     }
-            //     else if (!err && data) {
-            //         $scope.signed = true;
-            //         $scope.redirect = data;
-            //     }
-            // });
-            // $RAW.get('/accept/' + $stateParams.user + '/' + $stateParams.repoId, function(err, data, status){
-            //     if (status === 401) {
-            //         $window.location.href = '/login';
-            //     }
-            //     else if (!err && data) {
-            //         $scope.signed = true;
-            //         $scope.redirect = data;
-            //     }
-            // });
         };
 
         $scope.renderHtml = function(html_code)
