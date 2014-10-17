@@ -40,7 +40,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     return res.send(err);
                 }
 
-                var hash = crypto.createHash('md5').update(githubRepo.owner.login + githubRepo.name + githubPullRequest.head.user.login + signed, 'utf8').digest('hex');
+                var hash = crypto.createHash('md5').update(githubRepo.owner.login + githubRepo.name + githubPullRequest.head.user.login + signed.toString(), 'utf8').digest('hex');
 
                 if(req.get('If-None-Match') === hash) {
                     return res.status(304).send();
