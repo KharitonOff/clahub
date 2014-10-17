@@ -80,7 +80,6 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "grunt --verbose",
     "postinstall": "bower install"
   }
 }
