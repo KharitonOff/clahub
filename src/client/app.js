@@ -1,8 +1,7 @@
 var module = angular.module('app',
     ['ui.utils',
      'ui.router',
-     'ui.bootstrap',
-     'ngMock']);
+     'ui.bootstrap']);
 
 // *************************************************************
 // Delay start
