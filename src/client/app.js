@@ -1,10 +1,8 @@
 var module = angular.module('app',
-    ['ninja.filters',
-     'ui.utils',
+    ['ui.utils',
      'ui.router',
-     'ui.bootstrap']);
-
-var filters = angular.module('ninja.filters', []);
+     'ui.bootstrap',
+     'ngMock']);
 
 // *************************************************************
 // Delay start

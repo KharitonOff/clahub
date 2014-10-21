@@ -40,22 +40,24 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     return res.send(err);
                 }
 
-                var hash = crypto.createHash('md5').update(githubRepo.owner.login + githubRepo.name + githubPullRequest.head.user.login + signed.toString(), 'utf8').digest('hex');
+                var tmp = fs.readFileSync('src/server/templates/badge.svg', 'utf-8');
+                var hash = crypto.createHash('md5').update('pending', 'utf8').digest('hex');
+                var badgeText = 'Please sign our CLA!';
+
+                if (signed) {
+                    hash = crypto.createHash('md5').update('signed', 'utf8').digest('hex');
+                    badgeText = 'CLA accepted. Thank you for your contribution!';
+                }
 
                 if(req.get('If-None-Match') === hash) {
                     return res.status(304).send();
                 }
 
+                var svg = ejs.render(tmp, {text: badgeText});
+
                 res.set('Content-Type', 'image/svg+xml');
                 res.set('Cache-Control', 'no-cache');
                 res.set('Etag', hash);
-
-                var tmp = fs.readFileSync('src/server/templates/badge.svg', 'utf-8');
-                var badgeText = 'Please sign our CLA!';
-                if (signed) {
-                    badgeText = 'CLA accepted. Thank you for your contribution!';
-                }
-                var svg = ejs.render(tmp, {text: badgeText});
                 res.send(svg);
             });
         });
