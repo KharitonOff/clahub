@@ -1,6 +1,4 @@
 // module
-var merge = require('merge');
-var path = require('path');
 var fs = require('fs');
 var request = require('request');
 
@@ -19,7 +17,7 @@ module.exports = {
 			obj: 'gists',
 			fun: 'get',
 			arg: {
-				id: 'bf4bdf6497d0c93f168c'
+				id: config.terms
 			},
 			token: config.server.github.token
 		}, function(err, res){
@@ -27,7 +25,7 @@ module.exports = {
 				obj: 'markdown',
 				fun: 'render',
 				arg: {
-					text: res.files.legal.content
+					text: res.files[Object.keys(res.files)[0]].content
 				},
 				token: config.server.github.token
 			}, function(err, result) {

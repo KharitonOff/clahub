@@ -1,4 +1,3 @@
-// repo test
 describe('CLA Controller', function() {
 
     var scope, rootScope, stateParams, httpBackend, createCtrl, claController;
