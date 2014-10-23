@@ -7,5 +7,6 @@ before_script:
 - bower install
 - gem install scss-lint
 after_script:
+- grunt mocha_istanbul && grunt coveralls
 - if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'master' ]]; then ./.cf.sh clahub-staging; fi
 - if [[ $TRAVIS_PULL_REQUEST == 'false' && $TRAVIS_BRANCH == 'release' ]]; then ./.cf.sh clahub; fi
