@@ -18,16 +18,14 @@ module.exports = {
 			fun: 'get',
 			arg: {
 				id: config.terms
-			},
-			token: config.server.github.token
+			}
 		}, function(err, res){
 			github.call({
 				obj: 'markdown',
 				fun: 'render',
 				arg: {
 					text: res.files[Object.keys(res.files)[0]].content
-				},
-				token: config.server.github.token
+				}
 			}, function(err, result) {
 				if (result.statusCode !== 200 && err){
 					done(err);

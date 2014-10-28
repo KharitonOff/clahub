@@ -14,7 +14,7 @@ module.exports = {
                 repo: repo,
                 number: pullNumber,
                 // body: 'Please sign our CLA (' + claUrl + ')'
-                body: '[![ReviewNinja](' + badgeUrl + ')](' + claUrl + ')'
+                body: '[![claborate](' + badgeUrl + ')](' + claUrl + ')'
             },
             token: config.server.github.token
         }, function(err, res, meta){

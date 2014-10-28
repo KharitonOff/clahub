@@ -25,12 +25,11 @@ describe('cla:get', function(done) {
         var githubStub = sinon.stub(github, 'call', function(args, done) {
             var res;
             if (args.obj === 'gists') {
-                assert.deepEqual(args, {obj: 'gists', fun: 'get', arg:{ id:global.config.terms}, token: global.config.server.github.token });
+                assert.deepEqual(args, {obj: 'gists', fun: 'get', arg:{ id:global.config.terms}});
                 res = {files:{xyFile:{content:'some content'}}};
             } else {
                 assert.equal(args.obj, 'markdown');
                 assert.equal(args.fun, 'render');
-                assert.equal(args.token, global.config.server.github.token);
                 res = {status:200};
             }
             done(null, res);

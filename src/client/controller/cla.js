@@ -31,7 +31,7 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
             });
         }
 
-        if ($rootScope.user) {
+        if ($rootScope.user.value) {
             checkCLA();
         }
         getCLA();

@@ -5,13 +5,32 @@
 // path: /
 // *****************************************************
 
-module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', '$RAW',
-    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, $RAW) {
+module.controller('HomeCtrl', ['$rootScope', '$scope', '$state', '$stateParams', '$HUB', '$RPC', '$RAW', '$window',
+    function($rootScope, $scope, $state, $stateParams, $HUB, $RPC, $RAW, $window) {
 
-        $scope.pullRequests = [];
+        $scope.repos = [];
 
-        // $scope.hasRepos = true;
+        $scope.logAdminIn = function(){
+            $window.location.href = '/auth/github?admin=true';
+        };
 
+        $scope.$on('user', function(event, data){
+            if ($rootScope.user.value && $rootScope.user.value.admin) {
+                $HUB.call('repos', 'getAll', {user:$rootScope.user.value.login}, function(err, res){
+                    if (err) {
+                        return;
+                    }
+                    $scope.repos = res.value;
+                });
+            }
+        });
+
+        $scope.setting = function() {
+            var modal = $modal.open({
+                templateUrl: '/modals/templates/setting.html',
+                controller: 'SettingCtrl'
+            });
+        };
         // $RPC.call('cla', 'getPullRequests', {}, function(err, data) {
         //     if(!err) {
 

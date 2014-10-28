@@ -5,7 +5,26 @@
 module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', '$RAW',
     function($rootScope, $scope, $stateParams, $HUB, $RPC, $RAW) {
 
-        $rootScope.user = $HUB.call('user', 'get', {});
+        $rootScope.user = {value:{admin:false}};
+
+        $HUB.call('user', 'get', {}, function(err, res){
+            if (err) {
+                return;
+            }
+
+            $rootScope.user = res;
+            $rootScope.user.value.admin = false;
+            
+            console.log(res.meta.scopes);
+
+
+            if (res.meta.scopes.indexOf('write:repo_hook') > -1) {
+                $rootScope.user.value.admin = true;
+            }
+
+            $rootScope.$broadcast('user');
+        });
+
 
         // $rootScope.$on('repos:get', function(event, repo) {
         //     $scope.repo = repo;

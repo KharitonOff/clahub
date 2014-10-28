@@ -37,6 +37,7 @@ module.exports = {
             try {
                 meta.link = res.meta.link;
                 meta.hasMore = !!github.hasNextPage(res.meta.link);
+                meta.scopes = res.meta['x-oauth-scopes'];
                 delete res.meta;
             } catch (ex) {
                 meta = null;

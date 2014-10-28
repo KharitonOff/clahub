@@ -15,6 +15,7 @@ describe('CLA Controller', function() {
 
         scope = $rootScope.$new();
         rootScope = $rootScope;
+        rootScope.user = {};
         stateParams = {user:'login', repoId:1234};
 
         createCtrl = function() {
@@ -45,7 +46,7 @@ describe('CLA Controller', function() {
     });
 
     it('should check whether user has signed CLA allready or not', function(){
-        rootScope.user = {id:123, login:'login'};
+        rootScope.user.value = {id:123, login:'login'};
         claController = createCtrl();
 
         httpBackend.expect('POST','/api/cla/check','{"repo":' + stateParams.repoId + '}').respond(true);

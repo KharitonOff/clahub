@@ -40,13 +40,13 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
                     return res.send(err);
                 }
 
-                var tmp = fs.readFileSync('src/server/templates/badge.svg', 'utf-8');
+                var tmp = fs.readFileSync('src/server/templates/badge_not_signed.svg', 'utf-8');
                 var hash = crypto.createHash('md5').update('pending', 'utf8').digest('hex');
                 var badgeText = 'Please sign our CLA!';
 
                 if (signed) {
+                    tmp = fs.readFileSync('src/server/templates/badge_signed.svg', 'utf-8');
                     hash = crypto.createHash('md5').update('signed', 'utf8').digest('hex');
-                    badgeText = 'CLA accepted. Thank you for your contribution!';
                 }
 
                 if(req.get('If-None-Match') === hash) {
