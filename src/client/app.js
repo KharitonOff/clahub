@@ -43,7 +43,7 @@ module.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
             //
             .state('repo', {
                 abstract: true,
-                url: '/:user/:repoId',
+                url: '/:user/:repo',
                 template: '<section ui-view></section>'
             })
 

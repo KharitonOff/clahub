@@ -9,18 +9,18 @@ var guid = function(){
 
 module.exports = {
     check: function(args, done) {
-		CLA.findOne({repo:args.repo, user:args.user, href:config.terms}, function(err, cla){
+		CLA.findOne({repo: args.repo, user: args.user, href: args.gist}, function(err, cla){
             done(err, !!cla);
         });
     },
     create: function(args, done){
 		var now = new Date();
 
-		var cla = new CLA({uuid:guid(), repo: args.repo, user: args.user, href:config.terms, created_at:now});
+		var cla = new CLA({uuid: guid(), repo: args.repo, user: args.user, href: args.gist, created_at: now});
 		cla.save(done);
     },
     remove: function(args, done){
-		CLA.remove({repo:24456091}).exec();
+		CLA.remove({repo: 24456091}).exec();
 		done('all done');
     }
 };

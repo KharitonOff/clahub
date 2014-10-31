@@ -56,21 +56,21 @@ module.exports = function(req, res) {
 
 					if(user) {
 						user.requests.push({
-							id:pull_request.id,
-							url:pull_request.url,
+							id: pull_request.id,
+							url: pull_request.url,
 							number: req.args.number,
-							sha:pull_request.head.sha,
-							repo:pull_request.base.repo
+							sha: pull_request.head.sha,
+							repo: pull_request.base.repo
 						});
 					} else {
 						user = new User({
 							uuid: pull_request.user.id,
-							requests:[{
-								id:pull_request.id,
-								url:pull_request.url,
+							requests: [{
+								id: pull_request.id,
+								url: pull_request.url,
 								number: req.args.number,
-								sha:pull_request.head.sha,
-								repo:pull_request.base.repo
+								sha: pull_request.head.sha,
+								repo: pull_request.base.repo
 							}]
 						});
 					}
@@ -89,9 +89,9 @@ module.exports = function(req, res) {
 		});
 	}
 
-  if(req.args.action === 'synchronize') {
+  // if(req.args.action === 'synchronize') {
 
-  }
+  // }
 
 	res.status(200).send('OK');
 };

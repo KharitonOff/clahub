@@ -10,10 +10,12 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
 
         $scope.cla = {text: 'dummy text'};
         $scope.signed = false;
+        $scope.repoExists = false;
 
         function getCLA () {
             $RPC.call('cla', 'get', {
-                repo: $stateParams.repoId
+                repo: $stateParams.repo,
+                owner: $stateParams.user
             }, function(err, cla) {
                 if(!err) {
                     $scope.claText = cla.value.raw;
@@ -23,7 +25,7 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
 
         function checkCLA() {
             $RPC.call('cla', 'check', {
-                repo: $stateParams.repoId
+                repo: $stateParams.repo
             }, function(err, signed){
                 if (!err && signed.value) {
                     $scope.signed = true;
@@ -31,13 +33,28 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
             });
         }
 
-        if ($rootScope.user.value) {
-            checkCLA();
+        function checkRepo(callback) {
+            $RPC.call('repo', 'check', {
+                repo: $stateParams.repo,
+                owner: $stateParams.user
+            }, function(err, exists){
+                callback(exists.value);
+            });
         }
-        getCLA();
+
+        checkRepo(function(exists){
+            $scope.repoExists = exists;
+
+            if ($rootScope.user.value) {
+                checkCLA();
+            }
+            if (exists) {
+                getCLA();
+            }
+        });
 
         $scope.agree = function(){
-            $window.location.href = '/accept/' + $stateParams.user + '/' + $stateParams.repoId;
+            $window.location.href = '/accept/' + $stateParams.user + '/' + $stateParams.repo;
         };
 
         $scope.renderHtml = function(html_code)

@@ -16,11 +16,11 @@ describe('CLA Controller', function() {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         rootScope.user = {};
-        stateParams = {user:'login', repoId:1234};
+        stateParams = {user: 'login', repo: 'myRepo'};
 
         createCtrl = function() {
 
-            var ctrl =  $controller('ClaController', {
+            var ctrl = $controller('ClaController', {
                 $scope: scope,
                 $stateParams: stateParams
             });
@@ -39,21 +39,42 @@ describe('CLA Controller', function() {
         scope.user = null;
         claController = createCtrl();
 
-        httpBackend.expect('POST','/api/cla/get','{"repo":' + stateParams.repoId + '}').respond({raw:'<p>cla text</p>'});
+        httpBackend.expect('POST','/api/repo/check',{repo: stateParams.repo, owner: stateParams.user}).respond(true);
+        httpBackend.expect('POST','/api/cla/get',{repo: stateParams.repo, owner: stateParams.user}).respond({raw: '<p>cla text</p>'});
         httpBackend.flush();
 
         (claController.scope.claText).should.be.ok;
     });
 
     it('should check whether user has signed CLA allready or not', function(){
-        rootScope.user.value = {id:123, login:'login'};
+        rootScope.user.value = {id: 123, login: 'login'};
         claController = createCtrl();
 
-        httpBackend.expect('POST','/api/cla/check','{"repo":' + stateParams.repoId + '}').respond(true);
-        httpBackend.expect('POST','/api/cla/get','{"repo":' + stateParams.repoId + '}').respond({raw:'<p>cla text</p>'});
+        httpBackend.expect('POST','/api/repo/check',{repo: stateParams.repo, owner: stateParams.user}).respond(true);
+        httpBackend.expect('POST','/api/cla/check',{repo: stateParams.repo}).respond(true);
+        httpBackend.expect('POST','/api/cla/get',{repo: stateParams.repo, owner: stateParams.user}).respond({raw: '<p>cla text</p>'});
         httpBackend.flush();
 
         (claController.scope.signed).should.be.ok;
+    });
 
+    it('should not load cla if repo does not exist', function(){
+        claController = createCtrl();
+
+        httpBackend.expect('POST','/api/repo/check',{repo: stateParams.repo, owner: stateParams.user}).respond(false);
+        httpBackend.flush();
+
+        (claController.scope.repoExists).should.not.be.ok;
+    });
+
+    it('should check whether user has signed cla even if repo does not exist? ', function(){
+        rootScope.user.value = {id: 123, login: 'login'};
+        claController = createCtrl();
+
+        httpBackend.expect('POST','/api/repo/check',{repo: stateParams.repo, owner: stateParams.user}).respond(false);
+        httpBackend.expect('POST','/api/cla/check',{repo: stateParams.repo}).respond(false);
+        httpBackend.flush();
+
+        (claController.scope.signed).should.not.be.ok;
     });
 });

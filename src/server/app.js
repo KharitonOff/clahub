@@ -212,7 +212,18 @@ async.series([
 //////////////////////////////////////////////////////////////////////////////////////////////////
 app.all('/api/cla/get', function(req, res) {
     res.set('Content-Type', 'application/json');
-    api['cla']['get'](req, function(err, obj) {
+    api.cla.get(req, function(err, obj) {
+        if(err) {
+            return res.status(err.code > 0 ? err.code : 500).send(JSON.stringify(err.text || err));
+            // return res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));
+        }
+        obj ? res.send(JSON.stringify(obj)) : res.send();
+    });
+});
+
+app.all('/api/repo/check', function(req, res) {
+    res.set('Content-Type', 'application/json');
+    api.repo.check(req, function(err, obj) {
         if(err) {
             return res.status(err.code > 0 ? err.code : 500).send(JSON.stringify(err.text || err));
             // return res.send(err.code > 0 ? err.code : 500, JSON.stringify(err.text || err));

@@ -8,6 +8,7 @@ global.config = require('../../../config');
 // models
 var User = require('../../../server/documents/user').User;
 var CLA = require('../../../server/documents/cla').CLA;
+var Repo = require('../../../server/documents/repo').Repo;
 
 //services
 var github = require('../../../server/services/github');
@@ -19,26 +20,60 @@ var status = require('../../../server/services/status');
 var cla_api = require('../../../server/api/cla');
 
 describe('cla:get', function(done) {
-    global.config.terms = 'xyz';
-
     it('should get gist and render it', function(done) {
+
+        var repoStub = sinon.stub(Repo, 'findOne', function(args, done){
+            var repo = {repo: 'myRepo', owner: 'login', gist: 'https://gist.github.com/myRepo/gistId'};
+            done(null, repo);
+        });
+
         var githubStub = sinon.stub(github, 'call', function(args, done) {
             var res;
             if (args.obj === 'gists') {
-                assert.deepEqual(args, {obj: 'gists', fun: 'get', arg:{ id:global.config.terms}});
-                res = {files:{xyFile:{content:'some content'}}};
+                assert.deepEqual(args, {obj: 'gists', fun: 'get', arg: { id: 'gistId'}});
+                res = {files: {xyFile: {content: 'some content'}}};
             } else {
                 assert.equal(args.obj, 'markdown');
                 assert.equal(args.fun, 'render');
-                res = {status:200};
+                res = {status: 200};
             }
             done(null, res);
         });
 
-        var req = {};
+        var req = {args: {repo: 'myRepo', owner: 'login'}};
 
         cla_api.get(req, function(error, res) {
             githubStub.restore();
+            repoStub.restore();
+            done();
+        });
+
+    });
+
+    it('should handle wrong gist url', function(done) {
+
+        var repoStub = sinon.stub(Repo, 'findOne', function(args, done){
+            var repo = {repo: 'myRepo', owner: 'login', gist: '123'};
+            done(null, repo);
+        });
+
+        var githubStub = sinon.stub(github, 'call', function(args, done) {
+            var res;
+            var err;
+            if (args.obj === 'gists') {
+                err = 'error';
+            } else if (args.obj === 'markdown') {
+                assert();
+            }
+            done(err, res);
+        });
+
+        var req = {args: {repo: 'myRepo', owner: 'login'}};
+
+        cla_api.get(req, function(error, res) {
+            assert.equal(!!error, true);
+            githubStub.restore();
+            repoStub.restore();
             done();
         });
 
@@ -47,10 +82,10 @@ describe('cla:get', function(done) {
 
 describe('cla:sign', function(done) {
     var req = {
-        user: {id:3},
-        args:{
+        user: {id: 3},
+        args: {
             repo: 123,
-            owner: {id:1, login:'login'}
+            owner: {id: 1, login: 'login'}
         }
     };
 
@@ -99,7 +134,7 @@ describe('cla:sign', function(done) {
 
     it('should update status of pull request created by user, who signed', function(){
         var user = {
-            requests:[{repo:{id:123, name:'xy_repo'}, sha:'guid'}],
+            requests: [{repo: {id: 123, name: 'xy_repo'}, sha: 'guid'}],
             save: function(){}
         };
         var user_find = sinon.stub(User,'findOne', function(args, done){
@@ -117,9 +152,9 @@ describe('cla:sign', function(done) {
 
     it('should update status even if user has multiple requests', function(){
        var user = {
-            requests:[
-                {repo:{id:123, name:'xy_repo'}, sha:'guid'},
-                {repo:{id:234, name:'ab_repo'}, sha:'guid2'}],
+            requests: [
+                {repo: {id: 123, name: 'xy_repo'}, sha: 'guid'},
+                {repo: {id: 234, name: 'ab_repo'}, sha: 'guid2'}],
             save: function(){}
         };
         var user_find = sinon.stub(User,'findOne', function(args, done){

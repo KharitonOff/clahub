@@ -33,5 +33,5 @@ rules:
     quotes: [1, single]
     semi: 2
     space-infix-ops: 1
-    strict: 1
+    strict: 0
     valid-typeof: 1

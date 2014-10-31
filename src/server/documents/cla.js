@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var CLASchema = mongoose.Schema({
     uuid: Number,
-    repo: Number,
+    repo: String,
     user: Number,
     href: String,
     created_at: Date

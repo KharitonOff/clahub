@@ -4,6 +4,7 @@ var request = require('request');
 
 // models
 var User = require('mongoose').model('User');
+var Repo = require('mongoose').model('Repo');
 
 //services
 var github = require('../services/github');
@@ -13,24 +14,36 @@ var status = require('../services/status');
 
 module.exports = {
 	get: function(req, done){
-		github.call({
-			obj: 'gists',
-			fun: 'get',
-			arg: {
-				id: config.terms
+		Repo.findOne({repo: req.args.repo, owner: req.args.owner}, function(err, repo){
+			if (err || !repo) {
+				done(err);
+				return;
 			}
-		}, function(err, res){
+
+			var gistArray = repo.gist.split('/');
 			github.call({
-				obj: 'markdown',
-				fun: 'render',
+				obj: 'gists',
+				fun: 'get',
 				arg: {
-					text: res.files[Object.keys(res.files)[0]].content
+					id: gistArray[gistArray.length - 1]
 				}
-			}, function(err, result) {
-				if (result.statusCode !== 200 && err){
+			}, function(err, res){
+				if (err || !res) {
 					done(err);
+					return;
 				}
-				done(null, {raw:result.data});
+				github.call({
+					obj: 'markdown',
+					fun: 'render',
+					arg: {
+						text: res.files[Object.keys(res.files)[0]].content
+					}
+				}, function(err, result) {
+					if (result.statusCode !== 200 && err){
+						done(err);
+					}
+					done(null, {raw: result.data});
+				});
 			});
 		});
 	},
@@ -40,12 +53,12 @@ module.exports = {
 		var repoId = req.args.repo;
 		var self = this;
 
-		var args = {repo: req.args.repo, user: req.user.id, href:config.terms};
+		var args = {repo: req.args.repo, user: req.user.id, href: config.terms};
 
 		cla.check(args,function(err, signed){
 			if (!err && !signed) {
 				cla.create(args, function(){
-					User.findOne({uuid:req.user.id}, function(err, user){
+					User.findOne({uuid: req.user.id}, function(err, user){
 						if (!err) {
 							var number;
 							var repo;
@@ -78,7 +91,7 @@ module.exports = {
     },
 
     check: function(req, done){
-		var args = {repo: req.args.repo, user: req.user.id, href:config.terms};
+		var args = {repo: req.args.repo, user: req.user.id, href: config.terms};
 		cla.check(args, done);
     },
 

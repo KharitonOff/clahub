@@ -23,12 +23,12 @@
 	<div class="col-md-6" ng-if="user.value.admin">
 		<h2>Repositories</h2>
 	  	<table  class="col-md-6 table table-hover">
-			<tr ng-repeat="repo in repos | orderBy:'full_name'">
+			<tr ng-repeat="repo in repos | orderBy:'full_name'" ng-class="{'text-primary': repo.claborate.active}">
 				<td><span class="octicon octicon-repo"></span>&nbsp; {{ repo.owner.login }} / {{ repo.name }}</td>
 
 				<td style="text-align:right;">
 					<i class="fa fa-gear" 
-					ng-click="" 
+					ng-click="setting(repo)" 
 					tooltip-placement="bottom" 
 					tooltip="Settings">
 					</i>

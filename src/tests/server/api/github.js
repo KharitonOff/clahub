@@ -4,8 +4,6 @@ var sinon = require('sinon');
 
 // module
 var github = require('../../../server/services/github');
-// var merge = require('merge');
-// var path = require('path');
 
 // models
 // var User = require('../../../server/documents/user').User;
@@ -22,8 +20,8 @@ describe('github:call', function(done) {
 			done();
 		});
 
-		var req = {user:{id:1, login:'login', token:'abc'}, args:{obj:'gists', fun:'get'}};
-		
+		var req = {user: {id: 1, login: 'login', token: 'abc'}, args: {obj: 'gists', fun: 'get'}};
+
 		github_api.call(req,function(error, res) {
             githubStub.restore();
             done();

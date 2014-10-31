@@ -5,7 +5,7 @@
 module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '$RPC', '$RAW',
     function($rootScope, $scope, $stateParams, $HUB, $RPC, $RAW) {
 
-        $rootScope.user = {value:{admin:false}};
+        $rootScope.user = {value: {admin: false}};
 
         $HUB.call('user', 'get', {}, function(err, res){
             if (err) {
@@ -14,9 +14,6 @@ module.controller('RootCtrl', ['$rootScope', '$scope', '$stateParams', '$HUB', '
 
             $rootScope.user = res;
             $rootScope.user.value.admin = false;
-            
-            console.log(res.meta.scopes);
-
 
             if (res.meta.scopes.indexOf('write:repo_hook') > -1) {
                 $rootScope.user.value.admin = true;

@@ -4,6 +4,8 @@
  * @title config
  * @overview Configuration Module
  */
+var path = require('path');
+
 module.exports = {
     terms: process.env.TERMS_ID,
 
@@ -24,7 +26,7 @@ module.exports = {
 
             // review.ninja specific
             user_scope: ['user:email'],
-            admin_scope: ['user:email', 'repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org']
+            admin_scope: ['user:email', 'public_repo', 'repo:status', 'read:repo_hook', 'write:repo_hook', 'read:org']
         },
 
         localport: process.env.PORT || 5000,
@@ -33,12 +35,12 @@ module.exports = {
 
         http: {
             protocol: process.env.PROTOCOL || 'https',
-            host: process.env.HOST || 'review.ninja',
+            host: process.env.HOST || 'claborate.com',
             port: process.env.HOST_PORT
         },
 
         security: {
-            sessionSecret: process.env.SESSION_SECRET || 'cla.hub',
+            sessionSecret: process.env.SESSION_SECRET || 'claborate',
             cookieMaxAge: 60 * 60 * 1000
         },
 
@@ -61,33 +63,33 @@ module.exports = {
         landingPage: process.env.LANDING_PAGE,
 
         static: [
-            __dirname + '/bower',
-            __dirname + '/client'
+            path.join(__dirname, 'bower'),
+            path.join(__dirname, 'client')
         ],
 
         api: [
-            __dirname + '/server/api/*.js'
+            path.join(__dirname, 'server', 'api', '*.js')
         ],
 
         webhooks: [
-            __dirname + '/server/webhooks/*.js'
+            path.join(__dirname, 'server', 'webhooks', '*.js')
         ],
 
         documents: [
-            __dirname + '/server/documents/*.js'
+            path.join(__dirname, 'server', 'documents', '*.js')
         ],
 
         controller: [
-            __dirname + '/server/controller/!(default).js',
-            __dirname + '/server/controller/default.js'
+            path.join(__dirname, 'server', 'controller', '!(default).js'),
+            path.join(__dirname, 'server', 'controller', 'default.js')
         ],
 
         middleware: [
-            __dirname + '/server/middleware/*.js'
+            path.join(__dirname, 'server', 'middleware', '*.js')
         ],
 
         passport: [
-            __dirname + '/server/passports/*.js'
+            path.join(__dirname, 'server', 'passports', '*.js')
         ]
 
     },

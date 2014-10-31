@@ -27,8 +27,8 @@ module.exports = function() {
     return {
         // socket: localSocket,
         baseUrl: baseUrl,
-        webhook: function(id) {
-            return url.resolve(baseUrl, '/github/webhook/' + id);
+        webhook: function(repo) {
+            return url.resolve(baseUrl, '/github/webhook/' + repo);
         },
         baseWebhook: url.resolve(baseUrl, '/github/webhook/'),
         githubBase: githubBase,
