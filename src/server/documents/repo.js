@@ -4,7 +4,8 @@ var RepoSchema = mongoose.Schema({
     uuid: Number,
     repo: String,
     owner: String,
-    gist: String
+    gist: String,
+    token: String
 });
 
 RepoSchema.index({

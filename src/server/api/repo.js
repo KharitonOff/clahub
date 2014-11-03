@@ -7,6 +7,7 @@ module.exports = {
 		repo.check(req.args, done);
     },
     create: function(req, done){
+		req.args.token = req.user.token;
 		repo.create(req.args, done);
 	},
 	get: function(req, done){

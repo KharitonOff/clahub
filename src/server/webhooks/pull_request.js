@@ -51,7 +51,7 @@ module.exports = function(req, res) {
 				return;
 			}
 
-			cla.check({repo: args.repo_uuid, user: args.user}, function(err, signed){
+			cla.check({repo: args.repo, user: args.user}, function(err, signed){
 				if (!signed && !err) {
 
 					if(user) {

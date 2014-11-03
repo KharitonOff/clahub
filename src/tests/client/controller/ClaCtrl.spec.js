@@ -77,4 +77,16 @@ describe('CLA Controller', function() {
 
         (claController.scope.signed).should.not.be.ok;
     });
+
+    it('should generate redirect url if pull request number is given', function(){
+        scope.user = null;
+        stateParams.pullRequest = 1;
+        claController = createCtrl();
+
+        httpBackend.expect('POST','/api/repo/check',{repo: stateParams.repo, owner: stateParams.user}).respond(true);
+        httpBackend.expect('POST','/api/cla/get',{repo: stateParams.repo, owner: stateParams.user}).respond({raw: '<p>cla text</p>'});
+        httpBackend.flush();
+
+        (claController.scope.redirect).should.be.ok;
+    });
 });

@@ -7,7 +7,6 @@ global.config = require('../../../config');
 
 // models
 var User = require('../../../server/documents/user').User;
-var CLA = require('../../../server/documents/cla').CLA;
 var Repo = require('../../../server/documents/repo').Repo;
 
 //services
@@ -110,12 +109,13 @@ describe('cla:sign', function(done) {
     it('should store signed cla data if not signed yet', function(done) {
 
         var user_find = sinon.stub(User,'findOne', function(args, done){
-            done('error', null);
+            done('', {requests: [{number: 1, sha: 123, repo: {id: 123, name: 'myRepo'} }], save: function(){}});
         });
 
         req.user.id = 3;
 
         cla_api.sign(req, function(error, res) {
+            assert(res.pullRequest);
             assert(cla.create.called);
             user_find.restore();
             done();

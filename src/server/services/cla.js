@@ -1,4 +1,7 @@
-var CLA = require('mongoose').model('CLA');
+// var CLA = require('mongoose').model('CLA');
+require('../documents/cla');
+var mongoose = require('mongoose');
+var CLA = mongoose.model('CLA');
 
 var guid = function(){
 	return 'xxxxxxxxxxxxx'.replace(/[x]/g, function(c) {
@@ -20,7 +23,14 @@ module.exports = {
 		cla.save(done);
     },
     remove: function(args, done){
-		CLA.remove({repo: 24456091}).exec();
-		done('all done');
+		var string = '';
+		CLA.where('uuid').gte(1).exec(function(err, data){
+			console.log(data);
+			data.forEach(function(entry){
+				CLA.remove({uuid: entry.uuid}).exec();
+				string = string + '; repo: ' + entry.repo + ' user: ' + entry.user;
+			});
+			done(string);
+		});
     }
 };

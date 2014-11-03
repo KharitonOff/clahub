@@ -78,14 +78,14 @@ module.exports = {
 							user.requests.length = 0;
 							user.save();
 
-							done(err, url.githubPullRequest(req.args.owner, repo, number));
+							done(err, {pullRequest: number});
 						} else {
 							done(err);
 						}
 					});
 				});
 			} else if (signed) {
-				done(null, url.githubBase);
+				done(null);
 			}
 		});
     },

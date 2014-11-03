@@ -16,11 +16,11 @@ var repo_api = require('../../../server/api/repo');
 describe('repo', function(done) {
 	it('should create repo via service', function(done){
 		var repoCreateStub = sinon.stub(repo, 'create', function(args, done) {
-			assert.deepEqual(args, {repo: 'myRepo', owner: 'login', gist: 1234});
+			assert.deepEqual(args, {repo: 'myRepo', owner: 'login', gist: 1234, token: 'abc'});
 			done();
 		});
 
-		var req = {args: {repo: 'myRepo', owner: 'login', gist: 1234}};
+		var req = {args: {repo: 'myRepo', owner: 'login', gist: 1234}, user: {token: 'abc'}};
 
 		repo_api.create(req,function(error, res) {
             repoCreateStub.restore();

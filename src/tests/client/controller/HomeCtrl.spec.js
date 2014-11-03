@@ -66,7 +66,7 @@ describe('Home Controller', function() {
 
     it('should create webhook for the selected repo on activate action if there are no', function(){
 
-        httpBackend.expect('POST','/api/repo/create', { repo: 'myRepo', owner: 'login', gist: 1234 }).respond(true);
+        httpBackend.expect('POST','/api/repo/create', { repo: 'myRepo', owner: 'login', gist: 1234}).respond(true);
         httpBackend.expect('POST','/api/webhook/create', { repo: 'myRepo', owner: 'login' }).respond({});
 
         var repo = {id: 123, name: 'myRepo', owner: {login: 'login'}, claborate: {gist: 1234}};

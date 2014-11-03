@@ -48,8 +48,8 @@ module.exports = function() {
         pullRequestBadge: function(repoId, pullNumber) {
             return url.resolve(baseUrl, '/' + repoId + '/pull/' + pullNumber + '/badge');
         },
-        claURL: function(user,repoID) {
-            return url.resolve(baseUrl, '/' + user + '/' + repoID);
+        claURL: function(user, repo) {
+            return url.resolve(baseUrl, '/' + user + '/' + repo);
         },
         githubPullRequest: function(owner, repo, number){
             return url.resolve(githubBase, '/' + owner + '/' + repo + '/pull/' + number);

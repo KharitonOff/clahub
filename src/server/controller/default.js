@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var cla = require('./../api/cla');
+var url = require('./../services/url');
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Default router
@@ -13,8 +14,11 @@ router.use('/accept/:owner/:repo', function(req, res) {
 	req.args = {owner: req.params.owner, repo: req.params.repo};
 
     if (req.isAuthenticated()) {
-		cla.sign(req, function(){
-			res.redirect('/' + req.args.owner + '/' + req.args.repo);
+		cla.sign(req, function(err, data){
+			// res.redirect('/' + req.args.owner + '/' + req.args.repo);
+			var redirectUrl = path.join(path.sep, req.args.owner, req.args.repo);
+			redirectUrl = data && data.pullRequest ? redirectUrl + '?pullRequest=' + data.pullRequest : redirectUrl;
+			res.redirect(redirectUrl);
 		});
 
     } else {

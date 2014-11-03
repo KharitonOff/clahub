@@ -45,6 +45,9 @@ module.controller( 'ClaController', ['$window', '$rootScope', '$scope', '$stateP
         checkRepo(function(exists){
             $scope.repoExists = exists;
 
+            if ($stateParams.pullRequest) {
+                $scope.redirect = 'https://github.com/' + $stateParams.user + '/' + $stateParams.repo + '/pull/' + $stateParams.pullRequest;
+            }
             if ($rootScope.user.value) {
                 checkCLA();
             }

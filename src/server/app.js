@@ -32,7 +32,7 @@ app.use(require('cookie-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// custom middleware
+// custom mrepodleware
 app.use('/api', require('./middleware/param'));
 app.use('/github', require('./middleware/param'));
 app.use('/accept', require('./middleware/param'));
@@ -249,7 +249,7 @@ app.all('/api/:obj/:fun', function(req, res) {
 // Handle webhook calls
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.all('/github/webhook/:id', function(req, res) {
+app.all('/github/webhook/:repo', function(req, res) {
     var event = req.headers['x-github-event'];
     console.log('event ', event);
     try {

@@ -16,7 +16,7 @@ module.exports = {
         });
     },
     create: function(args, done){
-		var repo = new Repo({uuid: guid(), repo: args.repo, owner: args.owner, gist: args.gist});
+		var repo = new Repo({uuid: guid(), repo: args.repo, owner: args.owner, gist: args.gist, token: args.token});
 		repo.save(done);
     },
     get: function(args, done){

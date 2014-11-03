@@ -34,7 +34,7 @@ router.all('/:repoId/pull/:number/badge', function(req, res) {
             if(err) {
                 return res.send(err);
             }
-            var args = {repo:githubPullRequest.base.repo.id, user:githubPullRequest.head.user.id};
+            var args = {repo: githubPullRequest.base.repo.name, user: githubPullRequest.head.user.id};
             cla.check(args, function(err, signed){
                 if(err) {
                     return res.send(err);
