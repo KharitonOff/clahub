@@ -150,7 +150,7 @@ describe('cla:sign', function(done) {
         });
     });
 
-    it('should update status even if user has multiple requests', function(){
+    it('should update status of each users pull request', function(){
        var user = {
             requests: [
                 {repo: {id: 123, name: 'xy_repo'}, sha: 'guid'},

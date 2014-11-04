@@ -28,19 +28,27 @@ module.exports = {
             // if(!err && req.args.obj === 'repos' && req.args.fun === 'get' && res.permissions && res.permissions.push) {
 
                 // User.findOne({ uuid: req.user.id }, function(err, user) {
-                //     if(user) {
-                //         var found = false;
-                //         user.repos.forEach(function(repo) {
-                //             if(repo === res.id) {
-                //                 found = true;
-                //             }
+                //     if(!user)
+                //     {
+                //         user = new User({
+                //             uuid: req.user.id,
+                //             token: req.user.token
                 //         });
-
-                //         if(!found) {
-                //             user.repos.push(res.id);
-                //             user.save();
-                //         }
                 //     }
+                //     user.save();
+                //     // if(user) {
+                //     //     var found = false;
+                //     //     user.repos.forEach(function(repo) {
+                //     //         if(repo === res.id) {
+                //     //             found = true;
+                //     //         }
+                //     //     });
+
+                //     //     if(!found) {
+                //     //         user.repos.push(res.id);
+                //     //         user.save();
+                //     //     }
+                //     // }
                 // });
             // }
         });

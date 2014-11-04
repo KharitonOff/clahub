@@ -15,7 +15,6 @@ router.use('/accept/:owner/:repo', function(req, res) {
 
     if (req.isAuthenticated()) {
 		cla.sign(req, function(err, data){
-			// res.redirect('/' + req.args.owner + '/' + req.args.repo);
 			var redirectUrl = path.join(path.sep, req.args.owner, req.args.repo);
 			redirectUrl = data && data.pullRequest ? redirectUrl + '?pullRequest=' + data.pullRequest : redirectUrl;
 			res.redirect(redirectUrl);

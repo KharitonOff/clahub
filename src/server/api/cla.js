@@ -4,17 +4,17 @@ var request = require('request');
 
 // models
 var User = require('mongoose').model('User');
-var Repo = require('mongoose').model('Repo');
 
 //services
 var github = require('../services/github');
 var url = require('../services/url');
 var cla = require('../services/cla');
+var repoService = require('../services/repo');
 var status = require('../services/status');
 
 module.exports = {
 	get: function(req, done){
-		Repo.findOne({repo: req.args.repo, owner: req.args.owner}, function(err, repo){
+		repoService.get(req.args, function(err, repo){
 			if (err || !repo) {
 				done(err);
 				return;
